@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+         <h1>Ma liste de tâches</h1>
+         <div class="input-group">
+          <input type="text" id="taskInput" placeholder="Nouvelle tâche Fleur">
+         <button id="addTask">ajouter</button> 
+         </div>
+         <ul id="taskList"></ul> 
+    </div>
+ <script>
+    // Tableau pour stocker les tâches
+    let task =[];
+
+    // On sélection les éléments du Dom dont on a besoin
+     const taskInput = document.getElementById("taskInput");
+    const addTaskBtn= document.getElementById("addTask");
+    const taskList = document.getElementById("taskList");
+
+    // On ajoute un écouteur d'événement sur le bouton "ajouter"
+    addTaskBtn.addEventListener("click",()=> {
+
+    // Récupère la valeur et retire les espaces superflus
+        const newTask = taskInput.Value.trim();
+
+    // Si la saisie n'est pas vide, on ajoute la tâche au tableau
+    if (newTask != "") {
+        task.push(newTask)
+
+    // On vide le champ de saisie pour la prochaine tâche
+    taskInput.Value = "";
+
+    // On met à jour l'affichage des tâches
+    renderTask();
+    }
+  });
+    
+
+    /**
+     *  Fonction qui affiche la liste des tâchesà l'écran
+     *  Elle parcourt le tableau tasks et crée un <li> pour chaque élément
+     */
+
+    function renderTasks() {
+        // On vide d'abord la liste existante
+        taskList.innerHTML = "";
+
+        // Pour chaque tâche dans le tableau
+        task.forEach((task, index) => {
+
+        // On crée un élément de liste
+        const li = document.createElement("li");
+        li.textContent = task;
+
+         // On crée un bouton "Supprimer" pour chaque tâche
+         const deleteBtn = document.createElement("button");
+         deleteBtn.textContent = "supprimer";
+
+         // On ajoute un écouteur pour retirer la tâche du tableau
+         deleteBtn.addEventListener("click", () =>{
+
+         // splice retire l'élément à la position index
+         task.slice(index, 1);
+
+         // puis on rafraît l'affichage
+         renderTasks();
+         });
+
+         // On ajoute le bouton "Supprimer" dans l'<li>, puis l'<li> dans la liste
+         li.appendChild(deleteBtn);
+         taskList.appendChild(li); 
+
+     });
+ }
+ 
+    
+    </script>   
+</body>
+</html>
